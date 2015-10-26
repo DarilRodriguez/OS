@@ -118,6 +118,5 @@ _readDisk:
 
         jmp $
 
-var_1 db 00h
 buffer_pos dd 00h
 text_buffer db 00h
