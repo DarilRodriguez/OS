@@ -9,7 +9,7 @@ _loadkernel:
         mov dh, 00h
         mov ch, 00h
         mov dh, 02h
-        mov bx, 1000h
+        mov bx, 100h
         mov es, bx
         mov bx, 00h
 
@@ -18,14 +18,14 @@ _loadkernel:
         int 13
         jc _loadkernel
 
-        mov ax, 1000h
+        mov ax, 100h
         mov ds, ax
         mov es, ax
         mov fs, ax
         mov gs, ax
         mov ss, ax
 
-        jmp 1000h:00h
+        jmp 100h:00h
 
 times 510-($-$$) db 0
 dw 0xAA55
