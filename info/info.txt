@@ -1,0 +1,120 @@
+
+------[Info Assembler]------
+
+<registros>
+
+ 32 bits <- 16 bits (inferiores) <- [8 bits (superiores) : 8 bits (inferiores)]
+
+
+  :Registro de datos:
+
+   eax <- ax <- [ah:al]
+   ebx <- bx <- [bh:bl]
+   ecx <- cx <- [dh:dl]
+   edx <- dx <- [ch:cl]
+
+  :Puntero de pila:
+
+   esp <- sp
+   ebp <- bp
+
+  :Registro de indice:
+
+   edi <- di
+   esi <- si
+
+  :Registro de segmento:
+   16 bits (todos)
+
+   cs
+   ds
+   es
+   fs
+   gs
+   ss
+
+si -> pointers
+cx -> contador
+
+<Instrucciones>
+
+  :mov:
+
+   mov <registro>, <variable o valor inmediato>
+   mov al, 00h
+
+  :jmp:
+
+   jmp <pociocion o etiquieta>
+
+   etiqueta:     <---|salta a esta linea creando un bucle infinito
+      jmp etiqueta >-|
+
+  :shr: desplasa los bits acia la derecha
+
+   shr <registro>, <cantidad>
+
+   shr al, 1
+     0->[01111111 ] 1->CF
+
+  :shl: desplasa los bits acia la izquierda
+
+   shl <registro>, <cantidad>
+
+   shl al, 1
+     CF<-1 [11111110 ]<-0
+
+<Interrupciones :int:>
+
+---------------------------------
+info| <- retorna | -> parametro |
+---------------------------------
+
+int 10h
+    ah = 00h -> Modo de video
+       al = 03h -> Modo de video [Texto - 80x25]
+
+    ah = 0Eh -> Escribir un caracter y avanzar cursor
+       al -> caracter ascii
+       bl -> si esta en modo grafico color
+
+int 16h
+    ah = 00h -> obtener pulsacion del teclado
+       al <- caracter ascii de la tecla pulsada
+       ah <- scan-code de la tecla pulsada
+
+<punteros>
+
+ -----------------
+[pointer :  value ]
+ -----------------
+[07CF4   :00001010]
+ -----------------
+  /\         /\
+  ||         ||
+pointer   [pointer]
+
+  :Ejemplos:
+
+    mov si, 100h
+
+    [<0100h> : 00000000]
+
+    mov [si], FAh
+
+    [0100h : <11111010>]
+
+<saltos>
+
+jmp etiqueta    Salto incondicional directo
+je etiqueta     Salto por igual
+jne etiqueta    Salto por no igual
+jg etiqueta     Salto por mayor
+jng etiqueta    Salto por no mayor
+jge etiqueta    Salto por mayor igual
+jnge etiqueta   Salto por no mayor igual
+jl etiqueta     Salto por menor
+jnl etiqueta    Salto por no menor
+jle etiqueta    Salto por menor igual
+jnle etiqueta   Salto por no menor igual
+js etiqueta     Salto negativo
