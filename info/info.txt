@@ -78,6 +78,13 @@ int 10h
        al -> caracter ascii
        bl -> si esta en modo grafico color
 
+int 15h
+    ah = 86h -> Esperar
+    cx -> Parte superior del intervalo
+    dx -> Parte inferior del intervalo
+     cx   dx
+     FF   FF 
+
 int 16h
     ah = 00h -> obtener pulsacion del teclado
        al <- caracter ascii de la tecla pulsada
