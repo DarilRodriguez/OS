@@ -82,6 +82,12 @@ int 16h
     ah = 00h -> obtener pulsacion del teclado
        al <- caracter ascii de la tecla pulsada
        ah <- scan-code de la tecla pulsada
+       
+int 1Ah
+    ah = 02h -> obtener hora actual
+       ch <- horas
+       cl <- minutos
+       dh <- segundos
 
 <punteros>
 
