@@ -1,3 +1,4 @@
+
 code:
         cmp [buffer_pos], 00h
         je .end
@@ -6,8 +7,6 @@ code:
         mov [text_buffer+ecx], 00h
 
         ;==========inicio============
-        cmp [write_mode], 00h
-        jne .write_pos
 
              mov si, 5000h
              mov [si+0], byte 's'
@@ -63,23 +62,16 @@ code:
              mov di, text_buffer
              call cmpstr
              jnc .end
-             mov [write_mode], 0Fh
+             mov [write_mode], 0FFh
              jmp .end
-
-        .write_pos:
-             cmp [text_buffer], "c"
-             jne .nex3
-             mov al, [text_buffer+1]
-             call chartobin
-             mov al, [text_buffer+2]
-             call chartobin
-             add dh, al
-             mov al, dh
-
-             mov [write_ptr], ax
 
         .end:
         ret
 
 write_code:
+        mov al, [text_buffer]
+        call print
+        mov al, [text_buffer+1]
+        call print
         ret
+
