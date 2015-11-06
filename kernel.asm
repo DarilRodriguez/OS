@@ -67,9 +67,10 @@ _main:
                 .endcode:
 
                 ;==code==
-
                 cmp [write_mode], 00h
                 je .code
+
+                .write_mode_prompt:
                 mov ah, 0Eh
                 mov al, 'w'
                 int 10h
@@ -79,13 +80,18 @@ _main:
                 int 10h
                 mov al, '>'
                 int 10h
+                mov al, 0C9h
                 call write_code
+
                 mov [buffer_pos], 00h
+
                 jmp .loop
 
 
                 .code:
                 call code
+                cmp [write_mode], 0FFh
+                je .write_mode_prompt
                 mov [buffer_pos], 00h
                 ;========
 
@@ -136,9 +142,6 @@ cmpstr:
         .end:
         ret
 
-include "commands.asm"
-include "print.asm"
-
 _readDisk:
 
         mov si, 800h
@@ -171,7 +174,10 @@ _readDisk:
 
         jmp $
 
+include "commands.asm"
+include "print.asm"
+
 buffer_pos dd 00h
 text_buffer rb 0Ah
-write_mode db 00h
-write_ptr db 00h
+write_mode rb 01h
+write_ptr rw 01h
