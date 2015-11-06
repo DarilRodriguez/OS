@@ -7,8 +7,7 @@ _main:
         mov [write_ptr]  , 00h
         ;========
 
-        mov ah, 00h
-        mov al, 03h
+        mov ax, 03h
         int 10h
 
 ;        mov si, 5000h
@@ -46,8 +45,7 @@ _main:
                 .bkspc:
                         cmp [buffer_pos], 00h
                         je .end
-                        mov ah, 0Eh
-                        mov al, 08h
+                        mov ax, 0E08h
                         int 10h
                         mov al, 00h
                         int 10h
