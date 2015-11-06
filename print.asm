@@ -11,8 +11,7 @@ print:
         ret
 
 printc:
-        mov bh, 0
-        mov bl, 0
+        mov bx, 00h
         mov ah, 0Eh
         int 10h
         ret
@@ -22,7 +21,6 @@ printhex:
         shr al, 4
         shl dl, 4
         shr dl, 4
-
         cmp al, 0Ah
         jl .lowa
         add al, 55
@@ -32,7 +30,6 @@ printhex:
         .enda:
         mov ah, 0Eh
         int 10h
-
         mov al, dl
         cmp al, 0Ah
         jl .lowb
@@ -46,8 +43,7 @@ printhex:
         ret
 
 print_endl:
-        mov ah, 0Eh
-        mov al, 0Dh
+        mov ax, 0E0Dh
         int 10h
         mov al, 0Ah
         int 10h
