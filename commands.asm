@@ -1,4 +1,3 @@
-
 code:
         cmp [buffer_pos], 00h
         je .end
@@ -69,9 +68,23 @@ code:
         ret
 
 write_code:
-        mov al, [text_buffer]
-        call print
-        mov al, [text_buffer+1]
-        call print
-        ret
+	cmp [buffer_pos], 00h
+	je .end
+	
+	mov ecx, [buffer_pos]
+	mov [text_buffer+ecx], 00h
+	.nex1:
+		mov si, 5000h
+		mov [si], byte 'e'
+		mov [si+1], byte 'x'
+		mov [si+2], byte 'i'
+		mov [si+3], byte 't'
+		mov [si+4], byte 00h
+		mov di, text_buffer
+		call cmpstr
+		jnc .end
+		mov [write_mode], 00h
+		jmp .end
+	.end:
+	ret
 

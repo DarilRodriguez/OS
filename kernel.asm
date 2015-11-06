@@ -60,7 +60,6 @@ _main:
                 .ret:
                         call print_endl
                         jmp .endcode
-
                 .end:
 
                 jmp .loop
@@ -71,7 +70,12 @@ _main:
                 je .code
 
                 .write_mode_prompt:
-                mov ah, 0Eh
+                
+                call write_code
+                cmp [write_mode], 00h
+		je .prompt
+
+		mov ah, 0Eh
                 mov al, 'w'
                 int 10h
                 mov al, 'm'
@@ -81,8 +85,7 @@ _main:
                 mov al, '>'
                 int 10h
                 mov al, 0C9h
-                call write_code
-
+		
                 mov [buffer_pos], 00h
 
                 jmp .loop
