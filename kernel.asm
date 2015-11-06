@@ -1,13 +1,25 @@
 
 _main:
         ;==init==
-        mov [buffer_pos], 00000000h
+        mov [buffer_pos] , 00h
         mov [text_buffer], 00h
+        mov [write_mode] , 00h
+        mov [write_ptr]  , 00h
         ;========
 
         mov ah, 00h
         mov al, 03h
         int 10h
+
+;        mov si, 5000h
+;        mov [si+1], byte 0xb0
+;        mov [si+2], byte 0x61
+;        mov [si+3], byte 0xb4
+;        mov [si+4], byte 0x0E
+;        mov [si+5], byte 0xcd
+;        mov [si+6], byte 0x10
+;        mov [si+7], byte 0xc3
+;        call 0000h:5001h
 
         jmp .prompt
         .loop:
@@ -18,6 +30,9 @@ _main:
                 je .bkspc
                 cmp al, 0Dh
                 je .ret
+
+                cmp [buffer_pos], 4Dh
+                je .loop
 
                 mov ah, 0Eh
                 int 10h
@@ -53,9 +68,25 @@ _main:
 
                 ;==code==
 
+                cmp [write_mode], 00h
+                je .code
+                mov ah, 0Eh
+                mov al, 'w'
+                int 10h
+                mov al, 'm'
+                int 10h
+                mov al, ':'
+                int 10h
+                mov al, '>'
+                int 10h
+                call write_code
+                mov [buffer_pos], 00h
+                jmp .loop
+
+
+                .code:
                 call code
                 mov [buffer_pos], 00h
-
                 ;========
 
                 .prompt:
@@ -65,75 +96,6 @@ _main:
                 mov al, '>'
                 int 10h
                 jmp .loop
-
-code:
-        cmp [buffer_pos], 00h
-        je .end
-
-        mov ecx, [buffer_pos]
-        mov [text_buffer+ecx], 00h
-
-        ;==========inicio============
-             mov si, 5000h
-             mov [si+0], byte 's'
-             mov [si+1], byte 't'
-             mov [si+2], byte 'd'
-             mov [si+3], byte 'w'
-             mov [si+4], byte 00h
-             mov di, text_buffer
-             call cmpstr
-             jnc .nex1
-             mov ax, 5307h
-             mov cx, 0003h
-             int 15h
-
-        .nex1:
-             mov si, 5000h
-             mov [si+0], byte 'c'
-             mov [si+1], byte 'l'
-             mov [si+2], byte 'e'
-             mov [si+3], byte 'a'
-             mov [si+4], byte 'r'
-             mov [si+5], byte 00h
-             mov di, text_buffer
-             call cmpstr
-             jnc .nex2
-             mov ah, 00h
-             mov al, 03h
-             int 10h
-
-        .nex2:
-             cmp [text_buffer], "p"
-             jne .nex3
-             mov al, 'A'
-             call printc
-             mov al, [text_buffer+1]
-             call chartobin
-             mov dl, al
-             shl dl, 4
-             mov al, [text_buffer+2]
-             call chartobin
-             add dl, al
-             mov al, dl
-             call printc
-
-        .nex3:
-             cmp [text_buffer], "p"
-             jne .nex3
-             mov al, 'A'
-             call printc
-             mov al, [text_buffer+1]
-             call chartobin
-             mov dl, al
-             shl dl, 4
-             mov al, [text_buffer+2]
-             call chartobin
-             add dl, al
-             mov al, dl
-             call printc
-
-        .end:
-        ret
 
 chartobin:
         ;al
@@ -174,23 +136,42 @@ cmpstr:
         .end:
         ret
 
+include "commands.asm"
 include "print.asm"
 
-;_readDisk:
-;
-;        mov ah, 02h
-;        mov al, 01h
-;        mov ch, 00h
-;        mov cl, 02h
-;        mov dh, 01h
-;        mov dl, 80h
-;        mov bx, 800h
-;        int 13h
-;
-;        mov al, [800h]
-;        call printc
-;
-;        jmp $
+_readDisk:
+
+        mov si, 800h
+        mov [si], byte 'H'
+        mov [si+1], byte 'o'
+        mov [si+2], byte 'l'
+        mov [si+3], byte 'a'
+        mov [si+4], byte 00h
+
+        mov ah, 03h
+        mov al, 05h
+        mov ch, 00h
+        mov cl, 02h
+        mov dh, 01h
+        mov dl, 80h
+        mov bx, 800h
+        int 13h
+
+        mov ah, 02h
+        mov al, 05h
+        mov ch, 00h
+        mov cl, 02h
+        mov dh, 01h
+        mov dl, 80h
+        mov bx, 1000h
+        int 13h
+
+        mov al, [1000h]
+        call print
+
+        jmp $
 
 buffer_pos dd 00h
-text_buffer db 00h
+text_buffer rb 0Ah
+write_mode db 00h
+write_ptr db 00h
