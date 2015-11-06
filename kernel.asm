@@ -53,9 +53,8 @@ _main:
 
                 ;==code==
 
-                mov eax, [buffer_pos]
-                call printhex
                 call code
+                mov [buffer_pos], 00h
 
                 ;========
 
@@ -71,79 +70,111 @@ code:
         cmp [buffer_pos], 00h
         je .end
 
-        cmp [buffer_pos], 04h
-        jnge .nex1
-             cmp [text_buffer], 's'
-             jne .nex1
-             cmp [text_buffer+1], 't'
-             jne .nex1
-             cmp [text_buffer+2], 'd'
-             jne .nex1
-             cmp [text_buffer+3], 'w'
-             jne .nex1
+        mov ecx, [buffer_pos]
+        mov [text_buffer+ecx], 00h
+
+        ;==========inicio============
+             mov si, 5000h
+             mov [si+0], byte 's'
+             mov [si+1], byte 't'
+             mov [si+2], byte 'd'
+             mov [si+3], byte 'w'
+             mov [si+4], byte 00h
+             mov di, text_buffer
+             call cmpstr
+             jnc .nex1
              mov ax, 5307h
              mov cx, 0003h
              int 15h
+
         .nex1:
+             mov si, 5000h
+             mov [si+0], byte 'c'
+             mov [si+1], byte 'l'
+             mov [si+2], byte 'e'
+             mov [si+3], byte 'a'
+             mov [si+4], byte 'r'
+             mov [si+5], byte 00h
+             mov di, text_buffer
+             call cmpstr
+             jnc .nex2
+             mov ah, 00h
+             mov al, 03h
+             int 10h
+
+        .nex2:
+             cmp [text_buffer], "p"
+             jne .nex3
+             mov al, 'A'
+             call printc
+             mov al, [text_buffer+1]
+             call chartobin
+             mov dl, al
+             shl dl, 4
+             mov al, [text_buffer+2]
+             call chartobin
+             add dl, al
+             mov al, dl
+             call printc
+
+        .nex3:
+             cmp [text_buffer], "p"
+             jne .nex3
+             mov al, 'A'
+             call printc
+             mov al, [text_buffer+1]
+             call chartobin
+             mov dl, al
+             shl dl, 4
+             mov al, [text_buffer+2]
+             call chartobin
+             add dl, al
+             mov al, dl
+             call printc
 
         .end:
-        mov [buffer_pos], 00h
         ret
 
-print:
+chartobin:
+        ;al
+        cmp al, 00h
+        je .end
+        cmp al, 65
+        jge .a
+        sub al, 48
+        jmp .end
+        .a:
+        sub al, 55
+        .end:
+        ret
+
+cmpstr:
+        ;di si
+        mov al, 01h
+        mov ah, al
+        mov dl, 0fh
         .loop:
+                cmp al, ah
+                jne .endf
+                cmp ah, 00h
+                je .endt
+
+                mov ah, [di]
                 mov al, [si]
-                cmp al, 00h
-                je .end
-                mov ah, 0Eh
-                int 10h
+
                 inc si
-                jmp .loop
+                inc di
+
+        jmp .loop
+        .endf:
+        shl dl, 1
+        jmp .end
+        .endt:
+        shr dl, 1
         .end:
         ret
 
-printc:
-        mov bh, 0
-        mov bl, 0
-        mov ah, 0Eh
-        int 10h
-        ret
-
-printhex:
-        mov dl, al
-        shr al, 4
-        shl dl, 4
-        shr dl, 4
-
-        cmp al, 0Ah
-        jl .lowa
-        add al, 55
-        jmp .enda
-        .lowa:
-        add al, 48
-        .enda:
-        mov ah, 0Eh
-        int 10h
-
-        mov al, dl
-        cmp al, 0Ah
-        jl .lowb
-        add al, 55
-        jmp .endb
-        .lowb:
-        add al, 48
-        .endb:
-        mov ah, 0Eh
-        int 10h
-        ret
-
-print_endl:
-        mov ah, 0Eh
-        mov al, 0Dh
-        int 10h
-        mov al, 0Ah
-        int 10h
-        ret
+include "print.asm"
 
 ;_readDisk:
 ;
