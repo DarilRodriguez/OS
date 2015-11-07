@@ -10,16 +10,6 @@ _main:
         mov ax, 03h
         int 10h
 
-;        mov si, 5000h
-;        mov [si+1], byte 0xb0
-;        mov [si+2], byte 0x61
-;        mov [si+3], byte 0xb4
-;        mov [si+4], byte 0x0E
-;        mov [si+5], byte 0xcd
-;        mov [si+6], byte 0x10
-;        mov [si+7], byte 0xc3
-;        call 0000h:5001h
-
         jmp .prompt
         .loop:
                 mov ah, 00h
@@ -71,9 +61,9 @@ _main:
                 
                 call write_code
                 cmp [write_mode], 00h
-		je .prompt
+                je .prompt
 
-		mov ah, 0Eh
+                mov ah, 0Eh
                 mov al, 'w'
                 int 10h
                 mov al, 'm'
@@ -83,7 +73,7 @@ _main:
                 mov al, '>'
                 int 10h
                 mov al, 0C9h
-		
+                
                 mov [buffer_pos], 00h
 
                 jmp .loop
@@ -179,6 +169,6 @@ include "commands.asm"
 include "print.asm"
 
 buffer_pos dd 00h
-text_buffer rb 0Ah
+text_buffer rb 50h
 write_mode rb 01h
 write_ptr rw 01h
