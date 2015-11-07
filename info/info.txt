@@ -78,23 +78,20 @@ int 10h
        al -> caracter ascii
        bl -> si esta en modo grafico color
 
-int 15h
-    ah = 86h -> Esperar
-    cx -> Parte superior del intervalo
-    dx -> Parte inferior del intervalo
-     cx   dx
-     FF   FF 
+int 13h
+    ah = 02h -> Leer
+    ah = 03h -> Escribir
+       cl -> sector a leer
+       al -> cantidad de sectores a leer
+       ch -> cilindro
+       dh -> cabeza
+       dl -> device [80h HDD]
+       bx -> direcion donde se cargara (buffer)
 
 int 16h
     ah = 00h -> obtener pulsacion del teclado
        al <- caracter ascii de la tecla pulsada
        ah <- scan-code de la tecla pulsada
-       
-int 1Ah
-    ah = 02h -> obtener hora actual
-       ch <- horas
-       cl <- minutos
-       dh <- segundos
 
 <punteros>
 
