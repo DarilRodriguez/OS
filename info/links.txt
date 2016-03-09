@@ -1,2 +1,5 @@
 http://eidanyoson.8k.com/interrupciones.htm
 http://www.rinconsolidario.org/eps/asm8086/CAP6.html
+http://expo.itch.edu.mx/view.php?f=asm_23#page1
+http://www.electronics.dit.ie/staff/tscarff/8086_instruction_set/8086_instruction_set.html#OUT
+https://es.wikipedia.org/wiki/Anexo:Instrucciones_x86
