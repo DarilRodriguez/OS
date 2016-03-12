@@ -5,3 +5,4 @@ http://www.electronics.dit.ie/staff/tscarff/8086_instruction_set/8086_instructio
 https://es.wikipedia.org/wiki/Anexo:Instrucciones_x86
 http://perso.wanadoo.es/pictob/ensamblador.htm#directiva_org
 http://moisesrbb.tripod.com/asm.html
+https://en.wikipedia.org/wiki/FLAGS_register
