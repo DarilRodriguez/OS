@@ -6,3 +6,4 @@ https://es.wikipedia.org/wiki/Anexo:Instrucciones_x86
 http://perso.wanadoo.es/pictob/ensamblador.htm#directiva_org
 http://moisesrbb.tripod.com/asm.html
 https://en.wikipedia.org/wiki/FLAGS_register
+https://en.wikipedia.org/wiki/Input/output_base_address
