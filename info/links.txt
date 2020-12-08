@@ -7,3 +7,5 @@ http://perso.wanadoo.es/pictob/ensamblador.htm#directiva_org
 http://moisesrbb.tripod.com/asm.html
 https://en.wikipedia.org/wiki/FLAGS_register
 https://en.wikipedia.org/wiki/Input/output_base_address
+http://www.ctyme.com/intr/rb-0275.htm
+http://www.intel-assembler.it/portale/5/programming-vga-card-asm-c/programming-vga-card-asm-c.asp
